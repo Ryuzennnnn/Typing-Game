@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Typing Game — Home</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1 class="home-title">Game-Based Approach To Improve Typing</h1>
+
+    <form id="startForm">
+      <div class="form-group">
+        <label class="label" for="studentName">Student Name</label>
+        <input id="studentName" class="input-field" type="text" placeholder="Enter your name..." autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="label" for="homeDifficulty">Difficulty Level</label>
+        <select id="homeDifficulty" class="select">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn primary">Start Typing Game</button>
+    </form>
+  </div>
+
+  <script>
+    const nameInput = document.getElementById('studentName');
+
+    function validateAndGo(targetUrl) {
+      const name = nameInput.value.trim();
+      const difficulty = document.getElementById('homeDifficulty').value;
+
+      if (!name) {
+        nameInput.classList.add('error-glow');
+        nameInput.placeholder = "Please enter your name!";
+        nameInput.focus();
+        return;
+      }
+
+      localStorage.setItem('studentName', name);
+      localStorage.setItem('difficulty', difficulty);
+      window.location.href = targetUrl;
+    }
+
+    document.getElementById('startForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      validateAndGo('typing.html');
+    });
+
+    nameInput.addEventListener('input', () => {
+      nameInput.classList.remove('error-glow');
+    });
+  </script>
+</body>
+</html>

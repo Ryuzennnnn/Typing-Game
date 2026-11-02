@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS Typing Game – Play</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Styling for the top navigation buttons */
+    .top-nav {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      gap: 10px;
+      z-index: 1000;
+    }
+    
+    .nav-btn {
+      border-radius: 999px;
+      padding: 8px 16px;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+      color: #000; /* Contrast against cyan accent */
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover { 
+      background: var(--accent-secondary); 
+      color: #fff;
+      box-shadow: 0 0 10px var(--accent-secondary);
+    }
+  </style>
+</head>
+<body>
+  <div class="top-nav">
+    <button class="nav-btn" id="btnHome" title="Back to home">Home</button>
+    <button class="nav-btn" id="btnGoToLeaderboard" title="View Rankings">Leaderboard</button>
+  </div>
+
+  <div class="container" id="app" aria-live="polite">
+    <div class="header">
+      <div style="display:flex; gap:12px; align-items:center;">
+        <div class="brand">CSS Typing Game</div>
+        <div id="studentInfo" style="font-weight:600; color:#fff; margin-left:8px;"></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="btnPassage">Switch Passage</button>
+        <select class="select" id="selectDifficulty"></select>
+        <select class="select" id="selectTime"></select>
+        <select class="select" id="selectFont"></select>
+        <button class="btn" id="btnContrast" aria-pressed="false">High Contrast: Off</button>
+        <button class="btn primary" id="btnStart">Start</button>
+        <button class="btn" id="btnReset" disabled>Reset</button>
+      </div>
+    </div>
+
+    <div class="hud">
+      <div class="stat"><div class="label">Timer</div><div class="value" id="timer">60</div></div>
+      <div class="stat"><div class="label">WPM</div><div class="value" id="wpm">0</div></div>
+      <div class="stat"><div class="label">Accuracy</div><div class="value" id="acc">100%</div></div>
+      <div class="stat">
+        <div class="label">Streak</div>
+        <div class="streak">
+          <div class="streak__bar" id="streakBar"></div>
+        </div>
+      </div>
+      <div class="stat"><div class="label">Speed</div><div class="value" id="speedRank">Slow</div></div>
+    </div>
+
+    <div class="play">
+      <div id="prompt" class="prompt font-medium" aria-label="Typing prompt area"></div>
+      <div class="help" aria-hidden="true">
+        Type the characters. Use <span class="kbd">Esc</span> to pause/resume,
+        <span class="kbd">Enter</span> to start.
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Difficulty: <strong id="difficultyLabel"></strong></div>
+      <div class="toggles">
+        <span id="roundStatus">Ready</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js" defer></script>
+  <script>
+    // Load initial settings from localStorage
+    const diff = localStorage.getItem("difficulty") || "medium";
+    const time = localStorage.getItem("time") || "60";
+    const font = localStorage.getItem("font") || "font-medium";
+    const studentName = localStorage.getItem("studentName") || "Student";
+
+    // Display student name in the header
+    document.getElementById("studentInfo").textContent = `Player: ${studentName}`;
+
+    // Populate dropdowns
+    document.getElementById("selectDifficulty").innerHTML = `
+      <option value="easy" ${diff==="easy"?"selected":""}>Easy</option>
+      <option value="medium" ${diff==="medium"?"selected":""}>Medium</option>
+      <option value="hard" ${diff==="hard"?"selected":""}>Hard</option>`;
+    
+    document.getElementById("selectTime").innerHTML = `
+      <option value="30" ${time==="30"?"selected":""}>30s</option>
+      <option value="60" ${time==="60"?"selected":""}>60s</option>
+      <option value="90" ${time==="90"?"selected":""}>90s</option>`;
+    
+    document.getElementById("selectFont").innerHTML = `
+      <option value="font-small" ${font==="font-small"?"selected":""}>A− (small)</option>
+      <option value="font-medium" ${font==="font-medium"?"selected":""}>A (medium)</option>
+      <option value="font-large" ${font==="font-large"?"selected":""}>A+ (large)</option>`;
+
+    // Navigation events
+    document.getElementById("btnHome").addEventListener("click", () => {
+      window.location.href = "index.html";
+    });
+
+    document.getElementById("btnGoToLeaderboard").addEventListener("click", () => {
+      window.location.href = "leaderboard.html";
+    });
+  </script>
+</body>
+</html>
